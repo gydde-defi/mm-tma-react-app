@@ -2,20 +2,40 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on PR
-on: pull_request
-permissions:
-  checks: write
-  contents: read
-  pull-requests: write
+
+on:
+  pull_request:
+    branches: [ "*" ]
+env:
+  ENV_FILE_NAME: .env.example
+
 jobs:
-  build_and_preview:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - run: yarn install & yarn build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MM_TMA_REACT_APP }}
-          projectId: mm-tma-react-app
+          node-version: '22'  # Specify Node.js version 22
+
+      - name: Set ENV_FILE_NAME based on branch
+        id: set-env-file-name
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "ENV_FILE_NAME=.env.stage" >> $GITHUB_ENV
+          else
+            echo "ENV_FILE_NAME=.env.stage" >> $GITHUB_ENV
+          fi
+
+      - name: Install dependencies
+        run: |
+          yarn install
+
+      - name: Build application
+        run: |
+          cp ${{ env.ENV_FILE_NAME }} .env
+          yarn build
