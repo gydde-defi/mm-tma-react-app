@@ -147,7 +147,7 @@ export const App = () => {
 
   return (
     <div className="App">
-      <h1>Example 29.2 deepLink=false</h1>
+      <h1>Example 29.2 deepLink=true</h1>
       <div className={"Info-Status"}>
         <p>{`Connected chain: ${chainId}`}</p>
         <p>{`Connected account: ${account}`}</p>
