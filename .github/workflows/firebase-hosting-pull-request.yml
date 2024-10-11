@@ -10,7 +10,7 @@ env:
   ENV_FILE_NAME: .env.example
 
 jobs:
-  deploy:
+  verify_build:
     runs-on: ubuntu-latest
 
     steps:

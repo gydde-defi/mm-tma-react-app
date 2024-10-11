@@ -15,6 +15,7 @@ root.render(
       logging:{
           developerMode: false,
         },
+        useDeeplink: false,
         communicationServerUrl: process.env.REACT_APP_COMM_SERVER_URL,
         checkInstallationImmediately: false, // This will automatically connect to MetaMask on page load
         i18nOptions: {
